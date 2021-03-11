@@ -6,7 +6,7 @@ const calculateRank = require("../calculateRank");
 const githubUsernameRegex = require("github-username-regex");
 
 require("dotenv").config();
-
+console.log("testing")
 async function getViews() {
     var [UID, SID] = getId();
     let url = 'https://medium.com/@chonyy/stats?filter=not-response&limit=50';
