@@ -71,21 +71,21 @@ const createTextNode2 = ({
     const numShift = index == 1 ? 43 : 52;
     const iconSvg = showIcons
         ? `
-      <svg data-testid="icon" class="icon" viewBox="0 0 20 20" version="1.1" width="80" height="80" x="42" y="0">
+      <svg data-testid="icon" class="icon" viewBox="0 0 20 20" version="1.1" width="25" height="25" x="20" y="60">
         ${icon}
       </svg>
     `
         : "";
     return `
       <g class="stagger" style="animation-delay: ${staggerDelay}ms" transform="translate(25, 0)">
+      <text 
+        class="stat bold mid-small" 
+        x="${numShift}" 
+        y="30"  
+        data-testid="${id}"
+      >${kValue}</text>
         ${iconSvg}
-        <text class="stat small" x="${shift}" y="85">${label}</text>
-        <text 
-          class="stat bold" 
-          x="${numShift}" 
-          y="105" 
-          data-testid="${id}"
-        >${kValue}</text>
+        <text class="stat small" x="${shift}" y="75">${label}</text>
       </g>
     `;
 };
@@ -210,11 +210,11 @@ const renderStatsCard = (stats = {}, options = { hide: [] }) => {
         ? ""
         : `<g data-testid="rank-circle" 
           transform="translate(400, ${height / 2 - 50})">
-        <circle class="rank-circle-rim" cx="-10" cy="8" r="40" />
-        <circle class="rank-circle" cx="-10" cy="8" r="40" />
+        <circle class="rank-circle-rim" cx="20" cy="8" r="40" />
+        <circle class="rank-circle" cx="20" cy="8" r="40" />
         <g class="rank-text">
           <text
-            x="${rank.level.length === 1 ? "-4" : "0"}"
+            x="${rank.level.length === 1 ? "16" : "24"}"
             y="0"
             alignment-baseline="central"
             dominant-baseline="central"
@@ -272,7 +272,7 @@ const renderStatsCard = (stats = {}, options = { hide: [] }) => {
     <svg x="-40" y="0">
       ${FlexLayout({
         items: statItems,
-        gap: lheight * 3.4,
+        gap: lheight * 3.6,
         direction: "",
         labelShift: 10,
     }).join("")}

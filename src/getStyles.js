@@ -58,6 +58,9 @@ const getStyles = ({
     .small {
       font-size: 14px;
     }
+    .mid-small {
+      font-size: 30px;
+    }
     .stagger {
       opacity: 0;
       animation: fadeInAnimation 0.3s ease-in-out  forwards;
@@ -86,7 +89,7 @@ const getStyles = ({
       stroke-width: 6;
       stroke-linecap: round;
       opacity: 0.8;
-      transform-origin: -10px 8px;
+      transform-origin: 20px 8px;
       transform: rotate(-90deg);
       animation: rankAnimation 1.5s forwards ease-in-out infinite;
     }
