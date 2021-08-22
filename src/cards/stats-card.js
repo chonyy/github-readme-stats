@@ -59,16 +59,16 @@ const createTextNode2 = ({
 
     const labelOffset = showIcons ? `x="25"` : "";
     let shift = 0;
-    if(index == 2) {
+    if (index == 2) {
         shift = 27;
     }
-    else if (index == 1){
-        shift = 38;
+    else if (index == 1) {
+        shift = 39;
     }
     else {
         shift = 40;
     }
-    const numShift = index == 1 ? 49 : 52;
+    const numShift = index == 1 ? 43 : 52;
     const iconSvg = showIcons
         ? `
       <svg data-testid="icon" class="icon" viewBox="0 0 20 20" version="1.1" width="80" height="80" x="42" y="0">
@@ -85,7 +85,7 @@ const createTextNode2 = ({
           x="${numShift}" 
           y="105" 
           data-testid="${id}"
-        >${kValue + 100}</text>
+        >${kValue}</text>
       </g>
     `;
 };
