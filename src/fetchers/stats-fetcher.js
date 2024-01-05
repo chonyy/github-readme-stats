@@ -9,23 +9,38 @@ require("dotenv").config();
 console.log("testing")
 async function getViews() {
     var [UID, SID] = getId();
-    let url = 'https://medium.com/@chonyy/stats?filter=not-response&limit=50';
+    let url = 'https://medium.com/_/graphql';
     let config = {
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
             'Cookie': `sid=${SID}; uid=${UID}`,
         }
     }
-    return await axios.get(url, config);
+    let data = {
+        "operationName": "LifetimeStoriesStatsQuery",
+        "variables": {
+            "username": "chonyy",
+            "first": 50,
+            "after": "",
+            "orderBy": {
+                "publishedAt": "DESC"
+            },
+            "filter": {
+                "published": true
+            }
+        },
+        "query": "query LifetimeStoriesStatsQuery($username: ID!, $first: Int!, $after: String!, $orderBy: UserPostsOrderBy, $filter: UserPostsFilter) {\n  user(username: $username) {\n    id\n    postsConnection(\n      first: $first\n      after: $after\n      orderBy: $orderBy\n      filter: $filter\n    ) {\n      edges {\n        node {\n          ...LifetimeStoriesStats_post\n          __typename\n        }\n        __typename\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment LifetimeStoriesStats_post on Post {\n  id\n  ...StoriesStatsTable_post\n  ...MobileStoriesStatsTable_post\n  __typename\n}\n\nfragment StoriesStatsTable_post on Post {\n  ...StoriesStatsTableRow_post\n  __typename\n  id\n}\n\nfragment StoriesStatsTableRow_post on Post {\n  id\n  ...TablePostInfos_post\n  firstPublishedAt\n  milestones {\n    boostedAt\n    __typename\n  }\n  isLocked\n  totalStats {\n    views\n    reads\n    __typename\n  }\n  earnings {\n    total {\n      currencyCode\n      nanos\n      units\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nfragment TablePostInfos_post on Post {\n  id\n  title\n  firstPublishedAt\n  readingTime\n  isLocked\n  visibility\n  ...usePostUrl_post\n  ...Star_post\n  __typename\n}\n\nfragment usePostUrl_post on Post {\n  id\n  creator {\n    ...userUrl_user\n    __typename\n    id\n  }\n  collection {\n    id\n    domain\n    slug\n    __typename\n  }\n  isSeries\n  mediumUrl\n  sequence {\n    slug\n    __typename\n  }\n  uniqueSlug\n  __typename\n}\n\nfragment userUrl_user on User {\n  __typename\n  id\n  customDomainState {\n    live {\n      domain\n      __typename\n    }\n    __typename\n  }\n  hasSubdomain\n  username\n}\n\nfragment Star_post on Post {\n  id\n  creator {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment MobileStoriesStatsTable_post on Post {\n  id\n  ...TablePostInfos_post\n  firstPublishedAt\n  milestones {\n    boostedAt\n    __typename\n  }\n  isLocked\n  totalStats {\n    reads\n    views\n    __typename\n  }\n  earnings {\n    total {\n      currencyCode\n      nanos\n      units\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n"
+    }
+
+    return await axios.post(url, data, config);
 }
 function process(data) {
-    let cleaned = data.replace('])}while(1);</x>', '');
-    let obj = JSON.parse(cleaned);
-    let posts = obj.payload.value;
+    let posts = data.data.user.postsConnection.edges
+
     let totalViews = 0;
     for (const post of posts) {
-        totalViews += post.views;
+        let views = post.node.totalStats.views
+        totalViews += views
     }
     return totalViews;
 }
