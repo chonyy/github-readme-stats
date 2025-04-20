@@ -151,9 +151,14 @@ async function fetchStats(
     }
 
     // Medium views
-    let viewsRes = await getViews();
-    let totalViews = process(viewsRes.data);
-    console.log(totalViews);
+    let totalViews = 'TBD'
+    try {
+        let viewsRes = await getViews();
+        totalViews = process(viewsRes.data);
+    } catch(error) {
+        // do nothing
+    }
+    console.log("Total views:", totalViews);
     stats.totalViews = totalViews;
 
     const user = res.data.data.user;
